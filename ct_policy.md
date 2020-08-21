@@ -4,18 +4,14 @@ _Questions: [ct-policy@chromium.org](https://groups.google.com/a/chromium.org/fo
 This document details the criteria for a certificate to be considered
 *CT Qualified*.
 
-In order to improve the security of Extended Validation (EV) certificates,
-Google Chrome requires that all certificates issued after 1 Jan 2015 be CT
-Qualified in order to be recognized as EV.
+Google Chrome requires that all Extended Validation (EV) certificates
+issued after 1 Jan 2015 be CT Qualified in order to be recognized as EV,
+and that all publicly-trusted TLS certificates issued after 30 April 2018
+be CT Qualified in order to be recognized as valid.
 
-In order to improve the security of the Certificate Authority (CA) ecosystem,
-Google Chrome may require that certificates be considered CT Qualified in
-order to be recognized as trusted. This may be in response to security
-incidents, in which certificates from a particular CA are required to be CT
-Qualified in order to ensure compliance with stated policies and industry
-requirements. This may also be based on site operators signalling that
-certificates for a particular domain be CT Qualified in order to ensure
-transparency of the issued certificates.
+In addition, Google Chrome allows for site operators to indicate that they
+expect all publicly-trusted certificates for their domain, regardless of when
+they were issued, be CT Qualified in order to be trusted.
 
 Chrome’s current Certificate Transparency implementation is as follows:
 
@@ -45,14 +41,14 @@ A certificate is “CT qualified” if it meets one of the following criteria:
      **AND** there is at least one SCT from a Google Log, qualified at the time
      of check, presented via any method;
 
-     **AND** there is at least one SCT from a non­Google Log, qualified at time
+     **AND** there is at least one SCT from a non-Google Log, qualified at time
      of check, presented via any method.
   1. An Embedded SCT from a log qualified at the time of check is presented;
 
      **AND** there is at least one Embedded SCT from a Google Log, once or
      currently qualified;
 
-     **AND** there is at least one Embedded SCT from a non­Google Log, once or
+     **AND** there is at least one Embedded SCT from a non-Google Log, once or
      currently qualified;
 
      **AND** there are Embedded SCTs from AT LEAST the number of logs once or
@@ -70,10 +66,10 @@ certificate.
 
 | Lifetime of Certificate | Number of SCTs from distinct logs |
 |:---:|:---:|
-| < 458 days | 2 |
-| >= 458 days, <= 823 days | 3<sup>[1](#footnote1)</sup> |
-| > 823 days, <= 1188 days | 4 |
-| > 1188 days | 5 |
+| < 15 months | 2 |
+| >= 15, <= 27 months | 3 |
+| > 27, <= 39 months | 4<sup>[1](#footnote1)</sup> |
+| > 39 months | 5 |
 
 <a name="footnote1"><sup>1</sup></a> EV certificates should never have a
 lifetime over 823 days (27 months).
